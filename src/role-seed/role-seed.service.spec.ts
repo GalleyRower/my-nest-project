@@ -18,6 +18,7 @@ export class RoleSeedService implements OnModuleInit {
     const roles = [
       { slug: 'admin' },
       { slug: 'user' },
+      { slug: 'moderator' },
     ];
 
     for (const role of roles) {
@@ -29,4 +30,3 @@ export class RoleSeedService implements OnModuleInit {
     }
   }
 }
-

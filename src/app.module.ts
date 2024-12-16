@@ -9,6 +9,10 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { RolesModule } from './roles/roles.module';
 import { SeedModule } from './seed/seed.module';
 import { ApplicationSeedModule } from './application-seed/application-seed.module';
+import { RoleSeedModule } from './role-seed/role-seed.module';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+import { AdminModule } from "./admin/admin.module";
 
 @Module({
   imports: [
@@ -17,13 +21,32 @@ import { ApplicationSeedModule } from './application-seed/application-seed.modul
       ttl: 60,
       limit: 10,
     }),
+    MailerModule.forRoot({
+      transport: {
+        host: process.env.MAIL_HOST,
+        port: parseInt(process.env.MAIL_PORT, 10),
+        auth: {
+          user: process.env.MAIL_USERNAME,
+          pass: process.env.MAIL_PASSWORD,
+        },
+      },
+      template: {
+        dir: __dirname + '/templates',
+        adapter: new HandlebarsAdapter(),
+        options: {
+          strict: true,
+        },
+      }
+    }),
     AuthModule,
     BlogsModule,
     CategoriesModule,
     ApplicationModule,
     RolesModule,
     SeedModule,
-    ApplicationSeedModule
+    ApplicationSeedModule,
+    RoleSeedModule,
+    AdminModule
   ],
   controllers: [],
   providers: [],

@@ -5,9 +5,11 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToMany,
-  JoinTable
+  JoinTable,
+  OneToOne,
 } from 'typeorm';
-import {Role} from "../../roles/entities/role.entity";
+import { Role } from '../../roles/entities/role.entity';
+import { UserProfile } from './user-profile.entity';
 
 @Entity('users')
 export class User {
@@ -27,6 +29,9 @@ export class User {
   updatedAt: Date;
 
   @ManyToMany(() => Role, (role) => role.users)
-  @JoinTable({name: 'user_roles'})
+  @JoinTable({ name: 'user_roles' })
   roles: Role[];
+
+  @OneToOne(() => UserProfile, (profile) => profile.user)
+  profile: UserProfile;
 }
